@@ -25,7 +25,7 @@ Install an existing atomic distro (e.g. SilverBlue or Bazzite or Aurora)
 
 # Switch to my base image
 
-
+rpm-ostree rebase ostree-unverified-registry:ghcr.io/ogglord/bazzite-ogglord:latest
 
 # Prerequisites for spinning your own image
 Working knowledge in the following topics:
