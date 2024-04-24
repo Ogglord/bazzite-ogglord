@@ -2,17 +2,17 @@
 
 # Purpose
 
-This repository is my custom Bazzite image. This template is the recommended way to make customizations to any image published by the Universal Blue Project:
+This is my custom Bazzite image. This template is the recommended way to make customizations to any image published by the Universal Blue Project:
 - [Bazzite](https://bazzite.gg/)
+⚠️Note: This is based on bazzite:testing ⚠️
 
+# What's added on top of Bazzite
 This image includes additional useful apps that I like and use on a daily basis.
-
-# Changes made
 - zsh
 - tmux
 - bat
 - ripgrep
-- tealdeer (tldr clone)
+- tealdeer (tldr)
 - tailscale
 - ncdu
 - bpytop
