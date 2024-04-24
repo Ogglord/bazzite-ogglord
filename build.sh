@@ -26,6 +26,11 @@ rpm-ostree install tealdeer
 rpm-ostree install ncdu
 rpm-ostree install bpytop
 rpm-ostree install ripgrep
+rpm-ostree install zoxide
+rpm-ostree install alacritty
+rpm-ostree install eza
+rpm-ostree install rclone
+rpm-ostree install rsync
 
 # rpmfusion
 rpm-ostree install vlc
