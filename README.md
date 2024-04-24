@@ -2,30 +2,39 @@
 
 # Purpose
 
-This repository is my custom Bazzite image. This template is the recommended way to make customizations to any image published by the Universal Blue Project:
+This is my custom Bazzite image. This concept of Bazzite and Universal Blue images are a somewhat semi-immutable distro. The image is built like an OCI container using Github Actions. This template is the recommended way to make customizations to any image published by the Universal Blue Project:
 - [Bazzite](https://bazzite.gg/)
 
-This image includes additional useful apps that I like and use on a daily basis.
 
-# Changes made
-- zsh
+⚠️Note: This is based on bazzite:testing ⚠️
+
+# What's added on top of Bazzite
+This image includes additional useful apps that I like and use on a daily basis:
+
+- alacritty
 - tmux
 - bat
+- eza
+- rclone
+- rsync
 - ripgrep
-- tealdeer (tldr clone)
+- tealdeer (tldr)
 - tailscale
 - ncdu
 - bpytop
 - vlc
-
+- zoxide
+- zsh
+  
 
 # Prerequisites
 
-Install an existing atomic distro (e.g. SilverBlue or Bazzite or Aurora)
+Install an existing Universal Blue distro (e.g. Bazzite or Aurora)
 
 # Switch to my base image
-
+```
 rpm-ostree rebase ostree-unverified-registry:ghcr.io/ogglord/bazzite-ogglord:latest
+```
 
 # Prerequisites for spinning your own image
 Working knowledge in the following topics:
