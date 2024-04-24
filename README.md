@@ -9,17 +9,23 @@ This is my custom Bazzite image. This concept of Bazzite and Universal Blue imag
 ⚠️Note: This is based on bazzite:testing ⚠️
 
 # What's added on top of Bazzite
-This image includes additional useful apps that I like and use on a daily basis.
-- zsh
+This image includes additional useful apps that I like and use on a daily basis:
+
+- alacritty
 - tmux
 - bat
+- eza
+- rclone
+- rsync
 - ripgrep
 - tealdeer (tldr)
 - tailscale
 - ncdu
 - bpytop
 - vlc
-
+- zoxide
+- zsh
+  
 
 # Prerequisites
 
