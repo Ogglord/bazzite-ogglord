@@ -1,19 +1,33 @@
-# image-template
+# Ogglord's Bazzite spin
 
 # Purpose
 
-This repository is meant to be a template for building your own custom Universal Blue image. This template is the recommended way to make customizations to any image published by the Universal Blue Project:
-- [Aurora](https://getaurora.dev/)
+This repository is my custom Bazzite image. This template is the recommended way to make customizations to any image published by the Universal Blue Project:
 - [Bazzite](https://bazzite.gg/)
-- [Bluefin](https://projectbluefin.io/)
-- [uCore](https://projectucore.io/)
-- [main](https://github.com/ublue-os/main/)
-- [hwe](https://github.com/ublue-os/hwe/) 
 
-This template includes a Containerfile and a Github workflow for building the container image. As soon as the workflow is enabled in your repository, it will build the container image and push it to the Github Container Registry.
+This image includes additional useful apps that I like and use on a daily basis.
+
+# Changes made
+- zsh
+- tmux
+- bat
+- ripgrep
+- tealdeer (tldr clone)
+- tailscale
+- ncdu
+- bpytop
+- vlc
+
 
 # Prerequisites
 
+Install an existing atomic distro (e.g. SilverBlue or Bazzite or Aurora)
+
+# Switch to my base image
+
+
+
+# Prerequisites for spinning your own image
 Working knowledge in the following topics:
 
 - Containers
@@ -25,12 +39,6 @@ Working knowledge in the following topics:
   - https://docs.fedoraproject.org/en-US/fedora-silverblue/
 - Github Workflows
   - https://docs.github.com/en/actions/using-workflows
-
-# How to Use
-
-## Template
-
-Select `Use this Template` and create a new repository from it. To enable the workflows, you may need to go the `Actions` tab of the new repository and click to enable workflows.
 
 ## Containerfile
 

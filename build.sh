@@ -12,12 +12,28 @@ RELEASE="$(rpm -E %fedora)"
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# this installs a package from fedora repos
-rpm-ostree install screen
 
-# this would install a package from rpmfusion
-# rpm-ostree install vlc
+
+
+
+
+
+# fedora repos
+rpm-ostree install tmux
+rpm-ostree install zsh zsh-autosuggestions zsh-syntax-highlighting
+rpm-ostree install bat
+rpm-ostree install tealdeer
+rpm-ostree install ncdu
+rpm-ostree install bpytop
+rpm-ostree install ripgrep
+
+# rpmfusion
+rpm-ostree install vlc
+
+# custom repo
+wget https://pkgs.tailscale.com/stable/fedora/tailscale.repo -P /etc/yum.repos.d/
+rpm-ostree install tailscale
 
 #### Example for enabling a System Unit File
 
-systemctl enable podman.socket
+#systemctl enable podman.socket
