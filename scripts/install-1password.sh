@@ -80,7 +80,7 @@ chmod 4755 /usr/lib/1Password/chrome-sandbox
 # at 1000, so let's skip ahead and set to something higher.
 
 #echo "DEBUG: Showing contents"
-ls /usr/lib/1Password/ -alh
+#ls /usr/lib/1Password/ -alh
 #cat /usr/lib/1Password/after-install.sh
 
 #HELPER_PATH="/usr/lib/1Password/1Password-KeyringHelper"

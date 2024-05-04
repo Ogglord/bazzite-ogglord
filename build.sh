@@ -27,6 +27,7 @@ rpm-ostree install alacritty
 rpm-ostree install eza
 rpm-ostree install rclone
 rpm-ostree install rsync
+rpm-ostree install firefox
 
 # rpmfusion
 rpm-ostree install vlc
