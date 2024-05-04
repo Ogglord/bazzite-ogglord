@@ -25,6 +25,9 @@ This image includes additional useful apps that I like and use on a daily basis:
 - vlc
 - zoxide
 - zsh
+- firefox
+- google chrome
+- 1password
   
 
 # Prerequisites
