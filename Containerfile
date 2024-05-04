@@ -64,6 +64,12 @@ RUN chmod +x /tmp/install-google-chrome.sh && \
     CHROME_RELEASE_CHANNEL=stable \  
     /tmp/install-google-chrome.sh
 
+RUN chmod +x /tmp/install-1password.sh && \
+    ONEPASSWORD_RELEASE_CHANNEL=beta \
+    GID_ONEPASSWORD=1500 \
+    GID_ONEPASSWORDCLI=1600 \
+    /tmp/install-1password.sh
+
 RUN rm -rf /tmp/* /var/* && \
     ostree container commit
 
