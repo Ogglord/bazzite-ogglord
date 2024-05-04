@@ -50,25 +50,26 @@ FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 
 COPY build.sh /tmp/build.sh
 
-
-
 RUN mkdir -p /var/lib/alternatives && \
-    /tmp/build.sh 
-    #&& \
-    #ostree container commit
+    /tmp/build.sh && \
+    ostree container commit
 
 # Add custom scripts to /tmp/
 ADD --chmod=0755 scripts/* /tmp/
 
 RUN chmod +x /tmp/install-google-chrome.sh && \
     CHROME_RELEASE_CHANNEL=stable \  
-    /tmp/install-google-chrome.sh
+    /tmp/install-google-chrome.sh && \
+    ostree container commit
 
+# Add custom scripts to /tmp/
+ADD --chmod=0755 scripts/* /tmp/
 RUN chmod +x /tmp/install-1password.sh && \
     ONEPASSWORD_RELEASE_CHANNEL=beta \
     GID_ONEPASSWORD=1500 \
     GID_ONEPASSWORDCLI=1600 \
-    /tmp/install-1password.sh
+    /tmp/install-1password.sh && \
+    ostree container commit
 
 RUN rm -rf /tmp/* /var/* && \
     ostree container commit
