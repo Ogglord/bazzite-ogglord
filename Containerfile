@@ -50,12 +50,15 @@ FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 
 COPY build.sh /tmp/build.sh
 
-# Add custom scripts to /tmp/
-ADD --chmod=0755 scripts/* /tmp/
+
 
 RUN mkdir -p /var/lib/alternatives && \
-    /tmp/build.sh && \
-    ostree container commit
+    /tmp/build.sh 
+    #&& \
+    #ostree container commit
+
+# Add custom scripts to /tmp/
+ADD --chmod=0755 scripts/* /tmp/
 
 RUN chmod +x /tmp/install-google-chrome.sh && \
     CHROME_RELEASE_CHANNEL=stable \  
