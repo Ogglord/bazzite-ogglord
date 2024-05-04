@@ -57,9 +57,9 @@ RUN mkdir -p /var/lib/alternatives && \
     /tmp/build.sh && \
     ostree container commit
 
-RUN chmod +x /tmp/install_chrome.sh && \
+RUN chmod +x /tmp/install-google-chrome.sh && \
     CHROME_RELEASE_CHANNEL=stable \  
-    /tmp/install_chrome.sh
+    /tmp/install-google-chrome.sh
 
 RUN rm -rf /tmp/* /var/* && \
     ostree container commit
