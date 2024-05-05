@@ -2,7 +2,7 @@
 
 # Purpose
 
-This is my custom Bazzite image. This concept of Bazzite and Universal Blue images are a somewhat semi-immutable distro. The image is built like an OCI container using Github Actions. This template is the recommended way to make customizations to any image published by the Universal Blue Project:
+This is my custom Bazzite image. This concept of Bazzite and Universal Blue images are a somewhat semi-immutable distro. The image is built like an OCI container using Github Actions. This is the recommended way to make customizations to any image published by the Universal Blue Project:
 - [Bazzite](https://bazzite.gg/)
 
 
