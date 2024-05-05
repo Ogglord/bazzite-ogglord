@@ -61,7 +61,8 @@ RUN curl -Lo /tmp/yq.tar.gz "https://github.com/mikefarah/yq/releases/latest/dow
 ### Install packages using blue-build rpm-ostree module
 #COPY --from=ghcr.io/blue-build/modules:latest /modules/rpm-ostree/rpm-ostree.sh /tmp/rpm-ostree.sh
 RUN chmod +x /tmp/rpm-ostree.sh && \
-        /tmp/rpm-ostree.sh /tmp/apps.yml
+        /tmp/rpm-ostree.sh /tmp/apps.yml && \
+        echo 'eval "$(starship init bash)"' >> /etc/bashrc
 
 # install Google Chrome
 RUN chmod +x /tmp/install-google-chrome.sh && \
