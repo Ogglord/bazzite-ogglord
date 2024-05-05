@@ -23,11 +23,12 @@ ARG SOURCE_SUFFIX=""
 ARG SOURCE_TAG="testing"
 
 
+
 ### 2. SOURCE IMAGE
 ## this is a standard Containerfile FROM using the build ARGs above to select the right upstream image
 FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 
-
+ENV OS_VERSION=40
 ### 3. OG MODIFICATIONS
 #############
 
@@ -39,24 +40,28 @@ RUN  rm -f /etc/yum.repos.d/_copr*.repo && \
      rm -rf /tmp/* /var/* && \
      ostree container commit
 
-# some RPM install fails unless this directory exists
+# Some RPM install fails unless this directory exists
 RUN mkdir -p /var/lib/alternatives
 
-# copy my specific files from the overlay directory
+# Copy my specific files from the overlay directory
 COPY overlay/usr /usr
 COPY overlay/etc/yum.repos.d/ /etc/yum.repos.d/
-COPY build.sh \     
-    /tmp
+COPY fonts.yml \
+     apps.yml  \    
+        /tmp/
 ADD --chmod=0755 scripts/* /tmp/
 
-# Starship Shell Prompt
-RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz" && \
-  tar -xzf /tmp/starship.tar.gz -C /tmp && \
-  install -c -m 0755 /tmp/starship /usr/bin && \
-  echo 'eval "$(starship init bash)"' >> /etc/bashrc
+# Install yq to process yaml
+RUN curl -Lo /tmp/yq.tar.gz "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64.tar.gz" && \
+  tar -xzf /tmp/yq.tar.gz -C /tmp && \
+  mv /tmp/yq_linux_amd64 /tmp/yq && \
+  install -c -m 0755 /tmp/yq /usr/bin
 
-# install applications that work OOB
-RUN /tmp/build.sh
+
+### Install packages using blue-build rpm-ostree module
+#COPY --from=ghcr.io/blue-build/modules:latest /modules/rpm-ostree/rpm-ostree.sh /tmp/rpm-ostree.sh
+RUN chmod +x /tmp/rpm-ostree.sh && \
+        /tmp/rpm-ostree.sh /tmp/apps.yml
 
 # install Google Chrome
 RUN chmod +x /tmp/install-google-chrome.sh && \
@@ -73,8 +78,6 @@ RUN chmod +x /tmp/1password.sh && \
 
 # Set up fonts using blue-build fonts module
 COPY --from=ghcr.io/blue-build/modules:latest /modules/fonts /tmp/modules/fonts
-ADD fonts.yml /tmp/
-ADD scripts/fonts.sh /tmp/
 RUN chmod +x /tmp/fonts.sh && \
        /tmp/fonts.sh /tmp/fonts.yml
 
@@ -86,5 +89,6 @@ RUN systemctl enable --global bazzite-og-user-vscode.service
 RUN  rm -f /etc/yum.repos.d/tailscale.repo && \
      rm -f /etc/yum.repos.d/vscode.repo && \
      rm -f /etc/yum.repos.d/docker-ce.repo && \
+     rm -f /etc/yum.repos.d/atim-starship*.repo && \
      rm -rf /tmp/* /var/* && \
      ostree container commit
