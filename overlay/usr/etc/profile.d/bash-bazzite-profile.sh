@@ -6,8 +6,8 @@ if test "$(id -u)" -gt "0" && test -d "$HOME"; then
     fi
 
     # Add default settings when there are no settings
-    if test ! -e "$HOME"/.bashrc.d/bash_ogge.sh; then
+    if test ! -e "$HOME"/.bashrc.d/defaults.sh; then
         mkdir -p "$HOME"/.bashrc.d/
-        cp -f /etc/skel.d/.bashrc.d/bash_ogge.sh "$HOME"/.bashrc.d/bash_ogge.sh
+        cp -f /etc/skel.d/.bashrc.d/defaults.sh "$HOME"/.bashrc.d/defaults.sh
     fi
 fi
