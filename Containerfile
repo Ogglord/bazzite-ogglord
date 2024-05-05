@@ -83,7 +83,8 @@ RUN chmod +x /tmp/fonts.sh && \
 
 
 # Set up services
-RUN systemctl enable --global bazzite-og-user-vscode.service
+RUN chmod +x /usr/bin/bazzite-og-user-vscode && \ 
+    systemctl enable --global bazzite-og-user-vscode.service
 
 # Clean up repos, everything is on the image so we don't need them
 RUN  rm -f /etc/yum.repos.d/tailscale.repo && \
