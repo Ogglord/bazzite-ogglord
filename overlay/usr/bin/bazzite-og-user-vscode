@@ -12,6 +12,7 @@ if [[ -f $USER_SETUP_VER_FILE && "$USER_SETUP_VER" = "$USER_SETUP_VER_RAN" ]]; t
   echo "User setup v$VER has already run. Exiting..."
   exit 0
 fi
+set -euo pipefail
 
 # Setup VSCode
 # Pre-install preferred VSCode Extensions
