@@ -13,28 +13,12 @@
 # - "lazurite"
 # - "vauxite"
 # - "base"
-#
-#  "aurora", "bazzite", "bluefin" or "ucore" may also be used but have different suffixes.
+# - "aurora"
+# - "bazzite"
+# - "bluefin"
+# - "ucore"
 ARG SOURCE_IMAGE="bazzite"
-
-## SOURCE_SUFFIX arg should include a hyphen and the appropriate suffix name
-# These examples all work for silverblue/kinoite/sericea/onyx/lazurite/vauxite/base
-# - "-main"
-# - "-nvidia"
-# - "-asus"
-# - "-asus-nvidia"
-# - "-surface"
-# - "-surface-nvidia"
-#
-# aurora, bazzite and bluefin each have unique suffixes. Please check the specific image.
-# ucore has the following possible suffixes
-# - stable
-# - stable-nvidia
-# - stable-zfs
-# - stable-nvidia-zfs
-# - (and the above with testing rather than stable)
 ARG SOURCE_SUFFIX=""
-
 ## SOURCE_TAG arg must be a version built for the specific image: eg, 39, 40, gts, latest
 ARG SOURCE_TAG="testing"
 
@@ -42,40 +26,65 @@ ARG SOURCE_TAG="testing"
 ### 2. SOURCE IMAGE
 ## this is a standard Containerfile FROM using the build ARGs above to select the right upstream image
 FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
-#
 
-### 3. MODIFICATIONS
-## make modifications desired in your image and install packages by modifying the build.sh script
-## the following RUN directive does all the things required to run "build.sh" as recommended.
 
-COPY build.sh /tmp/build.sh
+### 3. OG MODIFICATIONS
+#############
 
-RUN mkdir -p /var/lib/alternatives && \
-    /tmp/build.sh && \
-    ostree container commit
+# Clean up repos, everything is on the image so we don't need them
+RUN  rm -f /etc/yum.repos.d/_copr*.repo && \
+     rm -f /etc/yum.repos.d/charm.repo && \
+     rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo && \ 
+     rm -f /etc/yum.repos.d/negativo17-fedora-multimedia.repo  && \ 
+     rm -rf /tmp/* /var/* && \
+     ostree container commit
 
-# Add custom scripts to /tmp/
+# some RPM install fails unless this directory exists
+RUN mkdir -p /var/lib/alternatives
+
+# copy my specific files from the overlay directory
+COPY overlay/usr /usr
+COPY overlay/etc/yum.repos.d/ /etc/yum.repos.d/
+COPY build.sh \     
+    /tmp
 ADD --chmod=0755 scripts/* /tmp/
 
+# Starship Shell Prompt
+RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz" && \
+  tar -xzf /tmp/starship.tar.gz -C /tmp && \
+  install -c -m 0755 /tmp/starship /usr/bin && \
+  echo 'eval "$(starship init bash)"' >> /etc/bashrc
+
+# install applications that work OOB
+RUN /tmp/build.sh
+
+# install Google Chrome
 RUN chmod +x /tmp/install-google-chrome.sh && \
     CHROME_RELEASE_CHANNEL=stable \  
-    /tmp/install-google-chrome.sh && \
-    ostree container commit
+    /tmp/install-google-chrome.sh
 
-# Add custom scripts to /tmp/
-ADD --chmod=0755 scripts/* /tmp/
-RUN chmod +x /tmp/install-1password.sh && \
+### Install 1password using blue-build 1password module
+COPY --from=ghcr.io/blue-build/modules:latest /modules/bling/installers/1password.sh /tmp/1password.sh
+RUN chmod +x /tmp/1password.sh && \
     ONEPASSWORD_RELEASE_CHANNEL=beta \
     GID_ONEPASSWORD=1500 \
     GID_ONEPASSWORDCLI=1600 \
-    /tmp/install-1password.sh && \
-    ostree container commit
+        /tmp/1password.sh 
 
-RUN rm -rf /tmp/* /var/* && \
-    ostree container commit
+# Set up fonts using blue-build fonts module
+COPY --from=ghcr.io/blue-build/modules:latest /modules/fonts /tmp/modules/fonts
+ADD fonts.yml /tmp/
+ADD scripts/fonts.sh /tmp/
+RUN chmod +x /tmp/fonts.sh && \
+       /tmp/fonts.sh /tmp/fonts.yml
 
-## NOTES:
-# - /var/lib/alternatives is required to prevent failure with some RPM installs
-# - All RUN commands must end with ostree container commit
-#   see: https://coreos.github.io/rpm-ostree/container/#using-ostree-container-commit
+
+# Set up services
+RUN systemctl enable --global bazzite-og-user-vscode.service
+
 # Clean up repos, everything is on the image so we don't need them
+RUN  rm -f /etc/yum.repos.d/tailscale.repo && \
+     rm -f /etc/yum.repos.d/vscode.repo && \
+     rm -f /etc/yum.repos.d/docker-ce.repo && \
+     rm -rf /tmp/* /var/* && \
+     ostree container commit
