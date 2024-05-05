@@ -19,6 +19,7 @@ This image includes additional useful apps that I like and use on a daily basis:
 - curl
 - eza
 - firefox
+- fzf
 - google chrome
 - ncdu
 - rclone
