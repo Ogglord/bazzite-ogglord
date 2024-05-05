@@ -13,6 +13,7 @@ This image includes additional useful apps that I like and use on a daily basis:
 
 - 1password
 - alacritty
+- autojump
 - bat
 - bpytop
 - curl
