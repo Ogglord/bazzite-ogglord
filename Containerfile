@@ -44,6 +44,7 @@ RUN  rm -f /etc/yum.repos.d/_copr*.repo && \
 RUN mkdir -p /var/lib/alternatives
 
 # Copy my specific files from the overlay directory
+COPY just /tmp/just
 COPY overlay/usr /usr
 COPY overlay/etc/yum.repos.d/ /etc/yum.repos.d/
 COPY fonts.yml \
@@ -51,12 +52,14 @@ COPY fonts.yml \
         /tmp/
 ADD --chmod=0755 scripts/* /tmp/
 
+## concatenate all .just files to 60-custom.just
+RUN find /tmp/just -iname '*.just' -exec printf "\n\n" \; -exec cat {} \; >> /usr/share/ublue-os/just/60-custom.just 
+
 # Install yq to process yaml
 RUN curl -Lo /tmp/yq.tar.gz "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64.tar.gz" && \
   tar -xzf /tmp/yq.tar.gz -C /tmp && \
   mv /tmp/yq_linux_amd64 /tmp/yq && \
   install -c -m 0755 /tmp/yq /usr/bin
-
 
 ### Install packages using blue-build rpm-ostree module
 #COPY --from=ghcr.io/blue-build/modules:latest /modules/rpm-ostree/rpm-ostree.sh /tmp/rpm-ostree.sh
