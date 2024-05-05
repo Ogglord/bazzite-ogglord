@@ -11,23 +11,27 @@ This is my custom Bazzite image. This concept of Bazzite and Universal Blue imag
 # What's added on top of Bazzite
 This image includes additional useful apps that I like and use on a daily basis:
 
+- 1password
 - alacritty
-- tmux
 - bat
-- eza
-- rclone
-- rsync
-- ripgrep
-- tealdeer (tldr)
-- tailscale
-- ncdu
 - bpytop
-- vlc
-- zoxide
-- zsh
+- curl
+- eza
 - firefox
 - google chrome
-- 1password
+- ncdu
+- rclone
+- ripgrep
+- rsync
+- starship
+- tailscale
+- tealdeer
+- tmux
+- vlc
+- visual studio code
+- zoxide
+- zsh
+- +fonts (powerline, nerd fonts, mozilla fira mono)
   
 
 # Prerequisites
