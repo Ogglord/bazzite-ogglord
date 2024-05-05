@@ -61,8 +61,7 @@ RUN curl -Lo /tmp/yq.tar.gz "https://github.com/mikefarah/yq/releases/latest/dow
 ### Install packages using blue-build rpm-ostree module
 #COPY --from=ghcr.io/blue-build/modules:latest /modules/rpm-ostree/rpm-ostree.sh /tmp/rpm-ostree.sh
 RUN chmod +x /tmp/rpm-ostree.sh && \
-        /tmp/rpm-ostree.sh /tmp/apps.yml && \
-        echo 'eval "$(starship init bash)"' >> /etc/bashrc
+        /tmp/rpm-ostree.sh /tmp/apps.yml
 
 # install Google Chrome
 RUN chmod +x /tmp/install-google-chrome.sh && \
@@ -85,7 +84,9 @@ RUN chmod +x /tmp/fonts.sh && \
 
 # Set up services
 RUN chmod +x /usr/bin/bazzite-og-user-vscode && \ 
-    systemctl enable --global bazzite-og-user-vscode.service
+    systemctl enable --global bazzite-og-user-vscode.service && \
+    chmod +x /usr/bin/bazzite-og-user-bash && \ 
+    systemctl enable --global bazzite-og-user-bash.service
 
 # Clean up repos, everything is on the image so we don't need them
 RUN  rm -f /etc/yum.repos.d/tailscale.repo && \

@@ -4,6 +4,7 @@ repos:
   - https://pkgs.tailscale.com/stable/fedora/tailscale.repo
 install:  
   - alacritty
+  - autojump
   - bat
   - bpytop
   - code
@@ -11,6 +12,7 @@ install:
   - eza
   - firefox
   - firefox-langpacks
+  - fzf
   - mozilla-fira-mono-fonts
   - ncdu
   - powerline-fonts
