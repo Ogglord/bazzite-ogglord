@@ -11,6 +11,8 @@ This is my custom Bazzite image. This concept of Bazzite and Universal Blue imag
 # What's added on top of Bazzite
 This image includes additional useful apps that I like and use on a daily basis:
 
+I also prefer native firefox over flatpak so that I can get proper integration to 1pass.
+
 - 1password
 - alacritty
 - autojump
@@ -34,10 +36,11 @@ This image includes additional useful apps that I like and use on a daily basis:
 - zsh
 - +fonts (powerline, nerd fonts, mozilla fira mono)
   
-## Whats already in Bazzite
+## Whats already in Bazzite (i.e stuff I removed from my script)
 
  - zoxide
  - fish
+ - +alot
 
 # Prerequisites
 
