@@ -40,19 +40,15 @@ RUN  rm -f /etc/yum.repos.d/_copr*.repo && \
      rm -rf /tmp/* /var/* && \
      ostree container commit
 
-# Some RPM install fails unless this directory exists
-RUN mkdir -p /var/lib/alternatives
 
-# Copy my specific files from the overlay directory
-COPY just /tmp/just
-COPY overlay/usr /usr
-COPY overlay/etc/yum.repos.d/ /etc/yum.repos.d/
-COPY fonts.yml \
-     apps.yml  \    
-        /tmp/
-ADD --chmod=0755 scripts/* /tmp/
+## 3.I. Single installs
+###########
+
+# Some RPM install fails unless this directory exists
+#RUN mkdir -p /var/lib/alternatives
 
 ## concatenate all .just files to 60-custom.just
+COPY just /tmp/just
 RUN find /tmp/just -iname '*.just' -exec printf "\n\n" \; -exec cat {} \; >> /usr/share/ublue-os/just/60-custom.just 
 
 # Install yq to process yaml
@@ -61,12 +57,8 @@ RUN curl -Lo /tmp/yq.tar.gz "https://github.com/mikefarah/yq/releases/latest/dow
   mv /tmp/yq_linux_amd64 /tmp/yq && \
   install -c -m 0755 /tmp/yq /usr/bin
 
-### Install packages using blue-build rpm-ostree module
-#COPY --from=ghcr.io/blue-build/modules:latest /modules/rpm-ostree/rpm-ostree.sh /tmp/rpm-ostree.sh
-RUN chmod +x /tmp/rpm-ostree.sh && \
-        /tmp/rpm-ostree.sh /tmp/apps.yml
-
 # install Google Chrome
+COPY scripts/install-google-chrome.sh /tmp/
 RUN chmod +x /tmp/install-google-chrome.sh && \
     CHROME_RELEASE_CHANNEL=stable \  
     /tmp/install-google-chrome.sh
@@ -81,9 +73,24 @@ RUN chmod +x /tmp/1password.sh && \
 
 # Set up fonts using blue-build fonts module
 COPY --from=ghcr.io/blue-build/modules:latest /modules/fonts /tmp/modules/fonts
+COPY fonts.yml \
+     scripts/fonts.sh \
+        /tmp/
 RUN chmod +x /tmp/fonts.sh && \
-       /tmp/fonts.sh /tmp/fonts.yml
+       /tmp/fonts.sh /tmp/fonts.yml && \
+       ostree container commit
 
+
+## 3.II Bulk installs
+###########
+COPY overlay/usr /usr
+COPY overlay/etc/yum.repos.d/ /etc/yum.repos.d/
+
+### Install packages using blue-build rpm-ostree module
+#COPY --from=ghcr.io/blue-build/modules:latest /modules/rpm-ostree/rpm-ostree.sh /tmp/rpm-ostree.sh
+COPY scripts/rpm-ostree.sh /tmp/
+RUN chmod +x /tmp/rpm-ostree.sh && \
+        /tmp/rpm-ostree.sh /tmp/apps.yml
 
 # Set up services
 RUN chmod +x /usr/bin/bazzite-og-user-vscode && \ 

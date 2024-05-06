@@ -24,7 +24,6 @@ install:
   - tealdeer
   - tmux
   - vlc
-  - zoxide
   - zsh
   - zsh-autosuggestions
   - zsh-syntax-highlighting

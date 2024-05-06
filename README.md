@@ -31,10 +31,13 @@ This image includes additional useful apps that I like and use on a daily basis:
 - tmux
 - vlc
 - visual studio code
-- zoxide
 - zsh
 - +fonts (powerline, nerd fonts, mozilla fira mono)
   
+## Whats already in Bazzite
+
+ - zoxide
+ - fish
 
 # Prerequisites
 
