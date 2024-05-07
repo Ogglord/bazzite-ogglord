@@ -28,7 +28,6 @@ I also prefer native firefox over flatpak so that I can get proper integration t
 - ripgrep
 - rsync
 - starship
-
 - tealdeer
 - tmux
 - vlc
