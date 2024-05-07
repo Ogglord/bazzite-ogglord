@@ -88,9 +88,9 @@ COPY overlay/etc/yum.repos.d/ /etc/yum.repos.d/
 
 ### Install packages using blue-build rpm-ostree module
 #COPY --from=ghcr.io/blue-build/modules:latest /modules/rpm-ostree/rpm-ostree.sh /tmp/rpm-ostree.sh
-COPY scripts/rpm-ostree.sh && \
-     apps.yml && \
-          /tmp/
+COPY scripts/rpm-ostree.sh \
+     apps.yml \
+       /tmp/
 RUN chmod +x /tmp/rpm-ostree.sh && \
         /tmp/rpm-ostree.sh /tmp/apps.yml
 
