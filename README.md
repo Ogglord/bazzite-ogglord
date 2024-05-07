@@ -28,7 +28,7 @@ I also prefer native firefox over flatpak so that I can get proper integration t
 - ripgrep
 - rsync
 - starship
-- tailscale
+
 - tealdeer
 - tmux
 - vlc
@@ -38,9 +38,10 @@ I also prefer native firefox over flatpak so that I can get proper integration t
   
 ## Whats already in Bazzite (i.e stuff I removed from my script)
 
- - zoxide
  - fish
- - +alot
+ - tailscale
+ - zoxide 
+ - +alot more
 
 # Prerequisites
 
