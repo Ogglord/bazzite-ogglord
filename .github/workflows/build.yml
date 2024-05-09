@@ -93,8 +93,7 @@ jobs:
         with:
           containerfiles: |
             ./ogglord/Containerfile
-          # Postfix image name with -custom to make it a little more descriptive
-          # Syntax: https://docs.github.com/en/actions/learn-github-actions/expressions#format
+          context: ./ogglord
           image: ${{ env.MY_IMAGE_NAME }}
           tags: |
             ${{ steps.generate-tags.outputs.alias_tags }}
