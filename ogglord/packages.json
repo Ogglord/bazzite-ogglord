@@ -1,0 +1,37 @@
+{
+    "all": {
+        "include": {
+            "all": [],
+            "ogglord": [
+                "alacritty",
+                "autojump",
+                "bat",
+                "bpytop",
+                "code",
+                "curl",
+                "eza",
+                "firefox",
+                "firefox-langpacks",
+                "fzf",
+                "mozilla-fira-mono-fonts",
+                "ncdu",
+                "powerline-fonts",
+                "rclone",
+                "ripgrep",
+                "rsync",
+                "starship",
+                "tailscale",
+                "tealdeer",
+                "tmux",
+                "vlc",
+                "zsh",
+                "zsh-autosuggestions",
+                "zsh-syntax-highlighting"
+            ]            
+        },
+        "exclude": {
+            "all": [],            
+            "ogglord": []
+        }
+    }
+}

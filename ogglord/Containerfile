@@ -1,0 +1,72 @@
+## 1. BUILD ARGS
+# These allow changing the produced image by passing different build args to adjust
+# the source from which your image is built.
+# Build locally with:
+#  podman build -f Containerfile -t local-image
+
+ARG SOURCE_IMAGE="bazzite"
+ARG SOURCE_SUFFIX=""
+## SOURCE_TAG arg must be a version built for the specific image: eg, 39, 40, gts, latest
+ARG SOURCE_TAG="stable"
+
+
+
+### 2. SOURCE IMAGE
+## this is a standard Containerfile FROM using the build ARGs above to select the right upstream image
+FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
+
+# 0.12.1 matches docker/moby 24.0.5 which FCOS ships as of 40.20240421
+ARG DOCKER_BUILDX_VERSION=0.12.1
+# 2.24.7 matches docker/moby 24.0.5  which FCOS ships as of 40.20240421
+ARG DOCKER_COMPOSE_VERSION=v2.24.7
+
+### 3. OG MODIFICATIONS
+#############
+
+# Clean up repos, everything is on the image so we don't need them
+RUN  rm -f /etc/yum.repos.d/_copr*.repo && \
+     rm -f /etc/yum.repos.d/charm.repo && \
+     rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo && \ 
+     rm -f /etc/yum.repos.d/negativo17-fedora-multimedia.repo  && \ 
+     rm -f /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo && \ 
+     rm -f /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo && \ 
+     rm -rf /tmp/* /var/* && \
+     ostree container commit
+
+
+## 3.I. Single installs
+###########
+
+COPY *.sh /tmp/
+COPY packages.json /tmp/packages.json
+COPY usr /usr
+COPY etc /etc
+COPY just /tmp/just
+COPY --from=ghcr.io/blue-build/modules:latest /modules/bling/installers/1password.sh /tmp/1password-install.sh
+
+
+RUN mkdir -p /var/lib/alternatives \
+    && sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree.repo \
+    && sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo \
+    && sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo \    
+    && /tmp/install.sh \
+    && mv /var/lib/alternatives /staged-alternatives \
+    && rm -fr /tmp/* /var/* \
+    && ostree container commit \
+    && mkdir -p /var/lib && mv /staged-alternatives /var/lib/alternatives \    
+    && sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree.repo \
+    && sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo \
+    && sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo \  
+    && mkdir -p /tmp /var/tmp \
+    && chmod -R 1777 /tmp /var/tmp
+
+COPY --from=docker.io/docker/buildx-bin:${DOCKER_BUILDX_VERSION} /buildx /usr/libexec/docker/cli-plugins/docker-buildx
+COPY --from=docker.io/docker/compose-bin:${DOCKER_COMPOSE_VERSION} /docker-compose /usr/libexec/docker/cli-plugins/docker-compose
+
+RUN ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose \
+    && mv /var/lib/alternatives /staged-alternatives \
+    && rm -fr /tmp/* /var/* \
+    && ostree container commit \
+    && mkdir -p /var/lib && mv /staged-alternatives /var/lib/alternatives \
+    && mkdir -p /tmp /var/tmp \
+    && chmod -R 1777 /tmp /var/tmp

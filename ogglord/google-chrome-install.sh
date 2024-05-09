@@ -8,6 +8,7 @@ set -ouex pipefail
 echo "Installing Google Chrome"
 
 # Can be "beta" or "stable"
+CHROME_RELEASE_CHANNEL="stable" ## force stable, the beta URL is 404 
 RELEASE_CHANNEL="${CHROME_RELEASE_CHANNEL:-stable}"
 
 # On libostree systems, /opt is a symlink to /var/opt,
