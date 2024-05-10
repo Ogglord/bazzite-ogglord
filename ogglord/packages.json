@@ -1,8 +1,7 @@
 {
     "all": {
         "include": {
-            "all": [],
-            "ogglord": [
+            "all": [
                 "alacritty",
                 "autojump",
                 "bat",
@@ -27,6 +26,11 @@
                 "zsh",
                 "zsh-autosuggestions",
                 "zsh-syntax-highlighting"
+            ],
+            "ogglord": [             
+                "virt-manager",
+                "edk2-ovmf",
+                "qemu"
             ]            
         },
         "exclude": {
