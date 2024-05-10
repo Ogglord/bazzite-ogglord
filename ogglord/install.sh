@@ -5,11 +5,6 @@ set -ouex pipefail
 export OS_VERSION=40
 export PACKAGE_LIST="ogglord"
 
-## CONDITIONAL: install sanoid if ZFS
-#if [[ "-zfs" == "${ZFS_TAG}" ]]; then
-#    rpm-ostree install sanoid
-#fi
-
 ## ADD: 
 wget https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-40/atim-starship-fedora-40.repo -O /etc/yum.repos.d/_copr-atim-starship.repo
 
@@ -33,9 +28,11 @@ chmod +x /usr/bin/bazzite-og-user-vscode
 systemctl enable --global bazzite-og-user-vscode.service
 chmod +x /usr/bin/bazzite-og-user-bash
 systemctl enable --global bazzite-og-user-bash.service
+chmod +x /usr/bin/bazzite-og-user-virt
+systemctl enable --global bazzite-og-user-virt.service
 
 # tweak os-release
-#sed -i '/^PRETTY_NAME/s/(uCore.*$/(uCore)"/' /usr/lib/os-release
+sed -i '/^PRETTY_NAME/s/(Bazzite.*$/(Bazzite-ogglord)"/' /usr/lib/os-release
 
 rm -f /etc/yum.repos.d/tailscale.repo* && \
 rm -f /etc/yum.repos.d/vscode.repo && \

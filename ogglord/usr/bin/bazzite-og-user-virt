@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+
+# SCRIPT VERSION
+USER_SETUP_VER=1
+USER_SETUP_VER_FILE="${XDG_DATA_HOME:-$HOME/.local/share}/bazzite/virt-configured"
+USER_SETUP_VER_RAN=$(cat "$USER_SETUP_VER_FILE")
+
+mkdir -p "$(dirname "$USER_SETUP_VER_FILE")" || exit 1
+
+# Run script if updated
+if [[ -f $USER_SETUP_VER_FILE && "$USER_SETUP_VER" = "$USER_SETUP_VER_RAN" ]]; then
+  echo "User setup of virtualization for $USER v$VER has already run. Exiting..."
+  exit 0
+fi
+
+set -euo pipefail
+
+## Create libvirt group if needed
+if ! grep -q "^libvirt" /etc/group; then
+        grep '^libvirt' /usr/lib/group | sudo tee -a /etc/group > /dev/null
+fi
+
+## Add our user to the group
+sudo usermod -aG libvirt $USER
+
+
+# Prevent future executions
+echo "Writing state file"
+echo "$USER_SETUP_VER" > "$USER_SETUP_VER_FILE"
