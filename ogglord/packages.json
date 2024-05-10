@@ -30,7 +30,8 @@
             "ogglord": [             
                 "virt-manager",
                 "edk2-ovmf",
-                "qemu"
+                "qemu",
+                "strace"
             ]            
         },
         "exclude": {
