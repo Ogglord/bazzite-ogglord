@@ -1,5 +1,11 @@
 # Ogglord's Bazzite spin
 
+
+## ARCHIVED NOTICE!
+**NOTE**: This repository is no longer updated and has been archived 🔐. Have a look at [Birdie](https://github.com/ogglord/birdie), the successor.
+
+
+
 # Purpose
 
 This is my custom Bazzite image. This concept of Bazzite and Universal Blue images are a somewhat semi-immutable distro. The image is built like an OCI container using Github Actions. This is the recommended way to make customizations to any image published by the Universal Blue Project:
@@ -47,3 +53,4 @@ Install an existing Universal Blue distro (e.g. Bazzite or Aurora)
 ```
 rpm-ostree rebase ostree-unverified-registry:ghcr.io/ogglord/bazzite-ogglord:latest
 ```
+
