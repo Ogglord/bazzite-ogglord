@@ -31,6 +31,9 @@ systemctl enable --global bazzite-og-user-bash.service
 chmod +x /usr/bin/bazzite-og-user-virt
 systemctl enable --global bazzite-og-user-virt.service
 
+systemctl enable docker.socket
+systemctl disable podman.socket
+
 # tweak os-release
 sed -i '/^PRETTY_NAME/s/(Bazzite.*$/(Bazzite-ogglord)"/' /usr/lib/os-release
 
